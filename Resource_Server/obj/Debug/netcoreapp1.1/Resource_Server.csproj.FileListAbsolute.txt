@@ -1,0 +1,8 @@
+C:\Source\Auth0POC\Resource_Server\bin\Debug\netcoreapp1.1\Resource_Server.deps.json
+C:\Source\Auth0POC\Resource_Server\bin\Debug\netcoreapp1.1\Resource_Server.runtimeconfig.json
+C:\Source\Auth0POC\Resource_Server\bin\Debug\netcoreapp1.1\Resource_Server.runtimeconfig.dev.json
+C:\Source\Auth0POC\Resource_Server\bin\Debug\netcoreapp1.1\Resource_Server.dll
+C:\Source\Auth0POC\Resource_Server\bin\Debug\netcoreapp1.1\Resource_Server.pdb
+C:\Source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.AssemblyInfo.cs
+C:\Source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.dll
+C:\Source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.pdb
