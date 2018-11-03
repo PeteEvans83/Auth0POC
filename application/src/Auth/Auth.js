@@ -47,24 +47,36 @@ export default class Auth {
     history.replace("/home");
   }
 
-  logout(redirectTo) {
+  logout() {
+    var IdTokenVerifier = require("idtoken-verifier");
+
+    var verifier = new IdTokenVerifier({
+      issuer: "https://petereevansauth0.au.auth0.com/",
+      audience: "BQUHrSx0i5OjhIcnHx8E310wHhUI0Uep"
+    });
+
+    var idToken = verifier.decode(localStorage.getItem("id_token")).payload;
+
     // Clear access token and ID token from local storage
     localStorage.removeItem("access_token");
     localStorage.removeItem("id_token");
     localStorage.removeItem("expires_at");
     // navigate to the home route
 
-    if (redirectTo != null) {
-      window.location =
-        "https://" +
-        AUTH_CONFIG.domain +
-        "/v2/logout?returnTo=" +
-        encodeURI(redirectTo) +
+    var logoutPath = "https://" + AUTH_CONFIG.domain + "/v2/logout";
+
+    if (idToken["http://not-piedpiper.com.au/logoutredirect"] !== null) {
+      logoutPath =
+        logoutPath +
+        "?returnTo=" +
+        encodeURIComponent(
+          idToken["http://not-piedpiper.com.au/logoutredirect"]
+        ) +
         "&client_id=" +
         AUTH_CONFIG.clientId;
     }
 
-    history.replace("/home");
+    window.location = logoutPath;
   }
 
   isAuthenticated() {
