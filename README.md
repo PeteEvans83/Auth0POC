@@ -1,4 +1,5 @@
 # Auth0 Technical Exercise
+
 Auth0 Technical Exercise by Peter Evans
 
 This project contains two main components:
@@ -13,24 +14,21 @@ If the user is logged in, three buttons will be displayed.
 
 /Resource_Server
 
-The resource server provides access to a single resource, 9000 hours of premium content, and can be read via a 
-  * HTTP Get - Requires the role "Bachman"
-  * HTTP Put - Requires the role "Hendricks"
-  * HTTP Delete - Requires the role "Hanneman"
+The resource server provides access to a single resource, 9000 hours of premium content, and can be read via a
 
-
-
-
-
+- HTTP Get - Requires the role "Bachman"
+- HTTP Put - Requires the role "Hendricks"
+- HTTP Delete - Requires the role "Hanneman"
 
 Getting started
 
 Username: Erlich@not-piedpiper.com.au
 Password: Aviato420
 
+https://www.google.com.au/search?q=erlich+bachman
+
 Username: Richard@not-piedpiper.com.au
 Password: N3wInternet
 
 Username: Russ@not-radioOnInternet.com.au
 Password: 3CommaClub
-
