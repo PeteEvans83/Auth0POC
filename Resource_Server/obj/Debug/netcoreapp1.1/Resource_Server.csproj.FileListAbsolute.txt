@@ -6,3 +6,6 @@ C:\Source\Auth0POC\Resource_Server\bin\Debug\netcoreapp1.1\Resource_Server.pdb
 C:\Source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.AssemblyInfo.cs
 C:\Source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.dll
 C:\Source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.pdb
+C:\source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.csprojAssemblyReference.cache
+C:\source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.csproj.CoreCompileInputs.cache
+C:\source\Auth0POC\Resource_Server\obj\Debug\netcoreapp1.1\Resource_Server.AssemblyInfoInputs.cache
