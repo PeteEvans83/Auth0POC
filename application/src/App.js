@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Navbar, Button } from "react-bootstrap";
+import { AUTH_CONFIG } from "./Auth/auth0-variables";
 import "./App.css";
 
 class App extends Component {
@@ -12,7 +13,8 @@ class App extends Component {
   }
 
   logout() {
-    this.props.auth.logout();
+    // this.props.auth.logout(window.location.href);
+    this.props.auth.logout("https://www.google.com");
   }
 
   render() {
