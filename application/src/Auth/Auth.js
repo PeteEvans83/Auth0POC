@@ -8,7 +8,8 @@ export default class Auth {
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
     responseType: "token id_token",
-    scope: "openid"
+    scope: "openid offline_access api:access",
+    audience: "http://not-piedpiper.com.au/api/intersite/premiumcontent"
   });
 
   constructor() {

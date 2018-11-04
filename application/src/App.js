@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { Navbar, Button } from "react-bootstrap";
 import { AUTH_CONFIG } from "./Auth/auth0-variables";
+import axios from "axios";
 import "./App.css";
 
 class App extends Component {
+  state = {
+    message: ""
+  };
+
   goTo(route) {
     this.props.history.replace(`/${route}`);
   }
@@ -15,6 +20,22 @@ class App extends Component {
   logout() {
     // this.props.auth.logout(window.location.href);
     this.props.auth.logout("https://www.google.com");
+  }
+
+  readData() {
+    var accessToken = localStorage.getItem("access_token");
+
+    var config = {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${accessToken}`
+      }
+    };
+
+    axios
+      .get("http://localhost:5000/api/intersite/premiumcontent", config)
+      .then(response => this.setState({ message: response.data.message }))
+      .catch(error => this.setState({ message: error.message }));
   }
 
   render() {
@@ -52,6 +73,16 @@ class App extends Component {
                 onClick={this.logout.bind(this)}
               >
                 Log Out
+              </Button>
+            )}
+            {isAuthenticated() && (
+              <Button
+                id="qsLogoutBtn"
+                bsStyle="primary"
+                className="btn-margin"
+                onClick={this.readData.bind(this)}
+              >
+                Get Data
               </Button>
             )}
           </Navbar.Header>
