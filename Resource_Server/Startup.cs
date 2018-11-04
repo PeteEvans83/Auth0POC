@@ -10,6 +10,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+
 
 namespace Resource_Server
 {
@@ -26,6 +31,30 @@ namespace Resource_Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddAuthentication(options =>
+               {
+                   options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+               }).AddJwtBearer(options =>
+               {
+                   options.Authority = "https://petereevansauth0.au.auth0.com";
+                   options.Audience = "http://not-piedpiper.com.au/api/intersite/premiumcontent";
+                   options.TokenValidationParameters.ValidateLifetime = true;
+                   options.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
+               });
+
+            services.AddAuthorization(options =>
+             {
+
+
+                 options.AddPolicy("IncubatorAuthZ", policy => policy.RequireClaim("http://not-piedpiper.com.au/role", "Incubator"));
+                 options.AddPolicy("CEOAuthZ", policy => policy.RequireClaim("http://not-piedpiper.com.au/role", "CEO"));
+                 options.AddPolicy("InvestorAuthZ", policy => policy.RequireClaim("http://not-piedpiper.com.au/role", "Investor"));
+             });
+
+            services.AddCors();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +69,11 @@ namespace Resource_Server
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
+
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+//            app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
