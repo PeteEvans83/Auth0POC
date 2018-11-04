@@ -34,3 +34,11 @@ Password: N3wInternet
 Username: Russ@not-radioOnInternet.com.au
 Password: 3CommaClub
 
+
+Things to write about:
+
+CORS
+AuthZ Policy
+Custom Scope
+
+Audience for API Tokens
