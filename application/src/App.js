@@ -38,6 +38,42 @@ class App extends Component {
       .catch(error => this.setState({ message: error.message }));
   }
 
+  writeData() {
+    var accessToken = localStorage.getItem("access_token");
+
+    var config = {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${accessToken}`
+      }
+    };
+
+    var body = {
+      Authorize: accessToken
+    };
+
+    axios
+      .put("http://localhost:5000/api/intersite/premiumcontent", body, config)
+      .then(response => this.setState({ message: response.data.message }))
+      .catch(error => this.setState({ message: error.message }));
+  }
+
+  deleteData() {
+    var accessToken = localStorage.getItem("access_token");
+
+    var config = {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${accessToken}`
+      }
+    };
+
+    axios
+      .delete("http://localhost:5000/api/intersite/premiumcontent", config)
+      .then(response => this.setState({ message: response.data.message }))
+      .catch(error => this.setState({ message: error.message }));
+  }
+
   render() {
     const { isAuthenticated } = this.props.auth;
 
@@ -77,12 +113,32 @@ class App extends Component {
             )}
             {isAuthenticated() && (
               <Button
-                id="qsLogoutBtn"
+                id="qsGetDataButton"
                 bsStyle="primary"
                 className="btn-margin"
                 onClick={this.readData.bind(this)}
               >
                 Get Data
+              </Button>
+            )}
+            {isAuthenticated() && (
+              <Button
+                id="qsWriteDataButton"
+                bsStyle="primary"
+                className="btn-margin"
+                onClick={this.writeData.bind(this)}
+              >
+                Write Data
+              </Button>
+            )}
+            {isAuthenticated() && (
+              <Button
+                id="qsDeleteDataButton"
+                bsStyle="primary"
+                className="btn-margin"
+                onClick={this.deleteData.bind(this)}
+              >
+                Delete Data
               </Button>
             )}
           </Navbar.Header>

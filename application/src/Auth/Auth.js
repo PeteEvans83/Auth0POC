@@ -8,7 +8,7 @@ export default class Auth {
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
     responseType: "token id_token",
-    scope: "openid offline_access api:access",
+    scope: "openid api:access",
     audience: "http://not-piedpiper.com.au/api/intersite/premiumcontent"
   });
 
@@ -17,6 +17,8 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
+
+    this.scheduleRenewal();
   }
 
   login() {
@@ -44,8 +46,33 @@ export default class Auth {
     localStorage.setItem("access_token", authResult.accessToken);
     localStorage.setItem("id_token", authResult.idToken);
     localStorage.setItem("expires_at", expiresAt);
+    console.log(JSON.stringify(authResult));
+    this.scheduleRenewal();
+
     // navigate to the home route
     history.replace("/home");
+  }
+
+  tokenRenewalTimeout;
+
+  scheduleRenewal() {
+    const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+    const delay = expiresAt - Date.now();
+    if (delay > 0) {
+      this.tokenRenewalTimeout = setTimeout(() => {
+        this.renewToken();
+      }, delay);
+    }
+  }
+
+  renewToken() {
+    this.auth0.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        this.setSession(result);
+      }
+    });
   }
 
   logout() {
