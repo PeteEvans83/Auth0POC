@@ -16,25 +16,27 @@ namespace Resource_Server.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IncubatorAuthZ")]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "28% when I'm online" };
         }
 
 
-        // POST api/values
-        [HttpPost]
-        [Route("api/intersite/premiumcontent")]
 
-        public void Post([FromBody] string value)
+        [HttpPut]
+        [Route("api/intersite/premiumcontent")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "CEOAuthZ")]
+
+        public void Put()
         {
+
         }
 
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Route("api/intersite/premiumcontent")]
-
-        public void Delete(int id)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "InvestorAuthZ")]
+        public void Delete()
         {
+
         }
     }
 }

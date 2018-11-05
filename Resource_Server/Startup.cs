@@ -40,16 +40,16 @@ namespace Resource_Server
                    options.Authority = "https://petereevansauth0.au.auth0.com";
                    options.Audience = "http://not-piedpiper.com.au/api/intersite/premiumcontent";
                    options.TokenValidationParameters.ValidateLifetime = true;
-                   options.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
+
                });
 
             services.AddAuthorization(options =>
              {
 
-
-                 options.AddPolicy("IncubatorAuthZ", policy => policy.RequireClaim("http://not-piedpiper.com.au/role", "Incubator"));
                  options.AddPolicy("CEOAuthZ", policy => policy.RequireClaim("http://not-piedpiper.com.au/role", "CEO"));
                  options.AddPolicy("InvestorAuthZ", policy => policy.RequireClaim("http://not-piedpiper.com.au/role", "Investor"));
+                 options.AddPolicy("IncubatorAuthZ", policy => policy.RequireClaim("http://not-piedpiper.com.au/role", "Incubator"));
+
              });
 
             services.AddCors();
@@ -60,6 +60,9 @@ namespace Resource_Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
+            app.UseAuthentication();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -69,12 +72,13 @@ namespace Resource_Server
                 app.UseHsts();
             }
 
+            app.UseMvc();
             app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
-//            app.UseHttpsRedirection();
-            app.UseMvc();
+            //            app.UseHttpsRedirection();
+
         }
     }
 }
