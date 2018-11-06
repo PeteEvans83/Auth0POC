@@ -1,46 +1,114 @@
-# Auth0 Technical Exercise
+## Auth0 Technical Exercise
 
 Auth0 Technical Exercise by Peter Evans
+
+### Overview
+
+---
 
 This project contains two main components:
 
 /Application
 
-A simple React SPA that detects whether the user is logged in.
+A simple React SPA with the following behaviour:
 
-If the user is not logged in, a Login button will be presented.
+- Detects whether the user is logged in.
+- If the user is not logged in, a Login button will be presented.
+- If the user is logged in, three buttons will be displayed.
+- Refreshes the users session with the OP Periodically
 
-If the user is logged in, three buttons will be displayed.
+This SPA extends the Auth0 React examples located [here](https://github.com/auth0-samples/auth0-react-samples/tree/master/01-Login).
 
 /Resource_Server
 
-The resource server provides access to a single resource, 9000 hours of premium content, and can be read via a
+An ASPNET Core WebAPI that provides access to a single resource, 9000 hours of premium content, and can interacted with
 
-- HTTP Get - Requires the role "Bachman"
-- HTTP Put - Requires the role "Hendricks"
-- HTTP Delete - Requires the role "Hanneman"
+- HTTP Get - Requires the role "Incubator"
+- HTTP Put - Requires the role "CEO"
+- HTTP Delete - Requires the role "Investor"
 
-Getting started
+### Getting started
 
-Username: Erlich@not-piedpiper.com.au
-Password: Aviato420
+---
 
-https://www.google.com.au/search?q=erlich+bachman
+1. Launch Resource Server
+2. Launch SPA Application
+3. Login using one of the credentials below
 
-Username: Richard@not-piedpiper.com.au
-Password: N3wInternet
+#### Launch Resource Server
 
-Username: Russ@not-radioOnInternet.com.au
-Password: 3CommaClub
-<<<<<<< HEAD
-=======
+---
 
+Run as Docker container
 
-Things to write about:
+```
+cd .\Resource_Server\
+docker build -t resource_server .
+docker run -d -p 5000:80 --name rs resource_server
+```
 
-CORS
-AuthZ Policy
-Custom Scope
+Build & Run from source (Requires netcore >=2.1 SDK https://www.microsoft.com/net/download/dotnet-core/2.1)
 
-Audience for API Tokens
->>>>>>> 71f52fe05ef1deff524d7c72902775fb7f4eb4c7
+```
+cd .\Resource_Server\
+dotnet build
+dotnet run
+```
+
+#### Launch React SPA
+
+---
+
+Run as Docker container
+
+```
+cd .\application\
+docker build -t notpiedpiper .
+docker run -d -p 3000:3000 --name npp notpiedpiper
+```
+
+Build & Run from source (Requires Node.js >=10.0 and npm >=6.4)
+
+```
+cd .\application\
+npm install
+npm start
+```
+
+---
+
+#### Pre-defined Credentials
+
+---
+
+The following credentials have been set up at petereevansauth0.au.auth0.com
+
+| Username                        | Account Password | Role      |
+| :------------------------------ | :--------------- | :-------- |
+| Erlich@not-piedpiper.com.au     | Aviato420        | Incubator |
+| Richard@not-piedpiper.com.au    | N3wInternet      | CEO       |
+| Russ@not-radioOnInternet.com.au | 3CommaClub       | Investor  |
+
+#### Notes of Interest
+
+CORS and Redirects
+
+While for the purpose of a POC/Demo, having two seperate runtimes (Node and netcore) serving http requests introduces CORS related complexity, it was more interesting that localhost addresses were forbidden from being used for post-logout redirect URIs in configuring the OP.
+
+Including a specific Audience for scope=token requests
+
+In order to have a JWT-formatted access token returned as part of an Implicit flow request, the audience MUST be specified, otherwise a non-JWT access token will be returned.
+
+Custom Claims
+
+Two Collision Resistant Namespaced (CRN) Claims were introduced in this POC.
+
+http://not-piedpiper.com.au/logoutredirect is included as part of the id_token claim set and includes a preferred URL to be redirected to after logging out at both the RP and OP.
+
+http://not-piedpiper.com.au/role is included as part of the access token when the custom scope api:access is requested and is used by the resource_server to perform RBAC operations based on the bearer JWT access token.
+
+Audience for API Tokens - Access Tokens wouldnt come back as JWTs without it
+
+[CheckSession](https://auth0.github.io/auth0.js/global.html#checkSession) was used to provide rolling sessions in the SPA.
+
+Previously, I'd designed using Refresh Tokens (Native Apps) or /Authorize?id_token_hint={id_token}&promt=none with a session store backing to implement rolling sessions. Didnt have enough time to drill into the CheckSession implementation and pros/cons.
